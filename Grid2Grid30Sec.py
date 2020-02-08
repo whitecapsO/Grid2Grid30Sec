@@ -59,6 +59,8 @@ startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='star
 startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
+device.log(message='Loaded parameters', message_type='success')
+
 # Initialise row (X) and column (Y) indexes for all grids
 rowGrid1Index = 0
 colGrid1Index = 0
@@ -76,6 +78,9 @@ zPosGrid2 = startZGrid2
 # Get the current position
 currentPosition = device.POSITION
 
+device.log(message='Got current position', message_type='success')
+
+
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
     # Set first grids y position back to the first column
@@ -87,7 +92,7 @@ for rowGrid1Index in range(rowsGrid1):
         # if startLastRowOfGrid1 then the x position starts on the last row and moves backwards
         if alternateInBetweenGrid1 == 1 :
             if colGrid1Index > 0 and (colGrid1Index % 2) > 0 :
-                device.log(message='Grid 1 alternateInBetween', message_type='success')
+                #device.log(message='Grid 1 alternateInBetween', message_type='success')
                 if startLastRowOfGrid1 == 1 :
                     xPosGrid1 = startXGrid1 - (spaceBetweenRowsGrid1 * 0.5) - (spaceBetweenRowsGrid1 * rowGrid1Index)
                 else :
