@@ -74,9 +74,9 @@ zPosGrid1 = startZGrid1
 zPosGrid2 = startZGrid2
 
 # Get the current position
-currentPosition = device.POSITION
+currentPosition = device.get_current_position()
 
-device.log(message='Got current position', message_type='success')
+device.log(message='Got current position ' + str(currentPosition['x']), message_type='success')
 
 
 # Start the first grid movement
