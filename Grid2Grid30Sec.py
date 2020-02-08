@@ -76,9 +76,6 @@ zPosGrid2 = startZGrid2
 # Get the current position
 currentPosition = device.get_current_position()
 
-device.log(message='Got current position ' + str(currentPosition['x']), message_type='success')
-
-
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
     # Set first grids y position back to the first column
