@@ -59,8 +59,6 @@ startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='star
 startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
-device.log(message='Loaded parameters', message_type='success')
-
 # Initialise row (X) and column (Y) indexes for all grids
 rowGrid1Index = 0
 colGrid1Index = 0
