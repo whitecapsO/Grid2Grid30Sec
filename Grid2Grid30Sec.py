@@ -55,9 +55,9 @@ zPosGrid2 = startZGrid2
 
 # Get the current position
 currentPosition = device.get_current_position()
-testX = 147.0
-device.log(message='Get the ints', message_type='success')
-if ((testX - 5)  <= currentPosition['x'] and currentPosition['x'] <= (testX + 5)) :
+testXMin = 147.0 - 5
+testXMax = 147.0 + 5
+if testXMin <= currentPosition['x'] and currentPosition['x'] <= testXMax :
     device.log(message='Success', message_type='success')
 else :
     device.log(message='Fail', message_type='success')
