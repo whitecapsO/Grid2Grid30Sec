@@ -55,8 +55,7 @@ zPosGrid2 = startZGrid2
 
 # Get the current position
 currentPositionXCoord = device.get_current_position('x')
-currentPositionXstr = str(currentPositionXCoord)
-currentPositionX = int(currentPositionXstr)
+currentPositionX = currentPositionXCoord.astype(int)
 device.log(message='Converted to str ' + str(currentPositionX), message_type='success')
 
 testXMin = 147 - 5
