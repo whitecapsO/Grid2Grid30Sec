@@ -92,7 +92,9 @@ for rowGrid1Index in range(rowsGrid1):
             #device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
         else :
             # If the second grid was found then move otherwise check if we've reached the current position
-            if currentPositionGrid2Found :
+            device.log(message='Start potiential move', message_type='success')
+
+            if currentPositionGrid2Found == True :
                 currentPositionGrid2Found = false
                 device.move_absolute(
                 device.assemble_coordinate(xPosGrid1, yPosGrid1, zPosGrid1),
@@ -117,7 +119,7 @@ for rowGrid1Index in range(rowsGrid1):
             yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * colGrid2Index)
 
             # If the first grid was found then move otherwise check if we've reached the current position
-            if currentPositionGrid1Found :
+            if currentPositionGrid1Found == True:
                 currentPositionGrid1Found = false
                 device.move_absolute(
                 device.assemble_coordinate(xPosGrid2, yPosGrid2, zPosGrid2),
