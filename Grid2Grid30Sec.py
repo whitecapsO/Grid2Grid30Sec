@@ -121,12 +121,11 @@ for rowGrid1Index in range(rowsGrid1):
 
             # If the first grid was found then move otherwise check if we've reached the current position
             if currentPositionGrid1Found == True:
-                device.log(message='Make second grid move x:' + str(xPosGrid2) + ' y:' + str (yPosGrid2) + ' z:' + str(zPosGrid2), message_type='success')
                 currentPositionGrid1Found = false
                 device.move_absolute(
-                device.assemble_coordinate(xPosGrid2, yPosGrid2, zPosGrid2),
-                100,
-                device.assemble_coordinate(0, 0, 0))
+                    device.assemble_coordinate(xPosGrid2, yPosGrid2, zPosGrid2),
+                    100,
+                    device.assemble_coordinate(0, 0, 0))
                 device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
             elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
                 currentPositionGrid2Found = True
