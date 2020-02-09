@@ -121,6 +121,7 @@ for rowGrid1Index in range(rowsGrid1):
 
             # If the first grid was found then move otherwise check if we've reached the current position
             if currentPositionGrid1Found == True:
+                device.log(message='currentPositionGrid1Found', message_type='success')
                 currentPositionGrid1Found = false
                 device.move_absolute(
                 device.assemble_coordinate(100, 100, 0),
