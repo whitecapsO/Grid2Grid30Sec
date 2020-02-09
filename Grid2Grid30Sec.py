@@ -55,11 +55,12 @@ zPosGrid2 = startZGrid2
 
 # Get the current position
 currentPosition = device.get_current_position()
-device.log(message='Get the ints ' + type(currentPosition['x']), message_type='success')
-currentPositionX = int(currentPosition['x'])
-currentPositionY = int(currentPosition['y'])
-currentPositionZ = int(currentPosition['z'])
-device.log(message='Got the ints', message_type='success')
+testX = 147.0
+device.log(message='Get the ints', message_type='success')
+if ((testX - 5)  <= currentPosition['x'] and currentPosition['x'] <= (testX + 5)) :
+    device.log(message='Success', message_type='success')
+else :
+    device.log(message='Fail', message_type='success')
 
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
@@ -97,13 +98,13 @@ for rowGrid1Index in range(rowsGrid1):
             #device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
         else :
             # If the second grid was found then move otherwise check if we've reached the current position
-            device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPositionX), message_type='success')
+            device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPosition['x']), message_type='success')
             
-            if (int(xPosGrid1 - 5)  <= currentPositionX and currentPositionX <= int(xPosGrid1 + 5)) :
-                device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPositionX), message_type='success')
+            if (int(xPosGrid1 - 5)  <= currentPosition['x'] and currentPosition['x'] <= int(xPosGrid1 + 5)) :
+                device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPosition['x']), message_type='success')
 
-            if (int(yPosGrid1 - 5)  <= currentPositionY <= int(yPosGrid1 + 5)) :
-                device.log(message='yPosGrid1: ' + str(yPosGrid1) + ' currentPositionY: ' + str(currentPositionY), message_type='success')
+            if (int(yPosGrid1 - 5)  <= currentPosition['y'] <= int(yPosGrid1 + 5)) :
+                device.log(message='yPosGrid1: ' + str(yPosGrid1) + ' currentPositionY: ' + str(currentPosition['y']), message_type='success')
 
             if currentPositionGrid2Found == True :
                 currentPositionGrid2Found = false
