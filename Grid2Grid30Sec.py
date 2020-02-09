@@ -54,9 +54,10 @@ zPosGrid1 = startZGrid1
 zPosGrid2 = startZGrid2
 
 # Get the current position
-currentPositionX = device.get_current_position('x')
-currentPositionXstr = str(currentPositionX)
-device.log(message='Converted to str ' + currentPositionXstr, message_type='success')
+currentPositionXCoord = device.get_current_position('x')
+currentPositionXstr = str(currentPositionXCoord)
+currentPositionX = int(currentPositionXstr)
+device.log(message='Converted to str ' + str(currentPositionX), message_type='success')
 
 testXMin = 147 - 5
 testXMax = 147 + 5
