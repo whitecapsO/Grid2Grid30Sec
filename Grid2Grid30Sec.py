@@ -58,6 +58,7 @@ currentPosition = device.get_current_position()
 currentPositionX = int(currentPosition['x'])
 currentPositionY = int(currentPosition['y'])
 currentPositionZ = int(currentPosition['z'])
+device.log(message='Got the ints', message_type='success')
 
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
