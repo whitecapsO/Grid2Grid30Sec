@@ -105,7 +105,6 @@ for rowGrid1Index in range(rowsGrid1):
                 device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
             elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
                 currentPositionGrid1Found = True
-                device.log(message='Set currentPositionGrid1Found to true', message_type='success')
 
             # Set the x and y positions on the second grid if alternateInBetween assume the first 
             # column is not an alternateInBetween then odd numbered colums are
