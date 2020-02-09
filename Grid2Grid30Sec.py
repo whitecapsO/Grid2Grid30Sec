@@ -53,17 +53,12 @@ currentPositionGrid2Found = False
 zPosGrid1 = startZGrid1
 zPosGrid2 = startZGrid2
 
-# Get the current position
-currentPositionXstr = str(device.get_current_position('x'))
+# Get the current position for x and y
+currentPosition = device.get_current_position()
+currentPositionXstr = str(currentPosition['x'])
 currentPositionX = int(currentPositionXstr.split('.')[0])
-device.log(message='Converted to str' + currentPositionXstr + 'end', message_type='success')
-
-testXMin = 147 - 5
-testXMax = 147 + 5
-if testXMin <= currentPositionX and currentPositionX <= testXMax :
-    device.log(message='Success', message_type='success')
-else :
-    device.log(message='Fail', message_type='success')
+currentPositionYstr = str(currentPosition['y'])
+currentPositionY = int(currentPositionYstr.split('.')[0])
 
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
@@ -101,14 +96,6 @@ for rowGrid1Index in range(rowsGrid1):
             #device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
         else :
             # If the second grid was found then move otherwise check if we've reached the current position
-            device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPosition['x']), message_type='success')
-            
-            if (int(xPosGrid1 - 5)  <= currentPosition['x'] and currentPosition['x'] <= int(xPosGrid1 + 5)) :
-                device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPosition['x']), message_type='success')
-
-            if (int(yPosGrid1 - 5)  <= currentPosition['y'] <= int(yPosGrid1 + 5)) :
-                device.log(message='yPosGrid1: ' + str(yPosGrid1) + ' currentPositionY: ' + str(currentPosition['y']), message_type='success')
-
             if currentPositionGrid2Found == True :
                 currentPositionGrid2Found = false
                 device.move_absolute(
@@ -116,7 +103,7 @@ for rowGrid1Index in range(rowsGrid1):
                 100,
                 device.assemble_coordinate(0, 0, 0))
                 device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
-            elif ((xPosGrid1 - 5)  <= currentPosition['x'] <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5)  <= currentPosition['y'] <= (yPosGrid1 + 5)) :
+            elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
                 currentPositionGrid1Found = True
                 device.log(message='Set currentPositionGrid1Found to true', message_type='success')
 
@@ -141,7 +128,7 @@ for rowGrid1Index in range(rowsGrid1):
                 100,
                 device.assemble_coordinate(0, 0, 0))
                 device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
-            elif ((xPosGrid2 - 5)  <= currentPosition['x'] <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5)  <= currentPosition['y'] <= (yPosGrid2 + 5)) :
+            elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
                 currentPositionGrid2Found = True
 
             # Increment y column position for grid 1
