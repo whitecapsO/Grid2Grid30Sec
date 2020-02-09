@@ -20,26 +20,6 @@ from farmware_tools import get_config_value
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
 
-# Values for testing
-# *** First grid ***
-# rowsGrid1 = 4
-# colsGrid1 = 7 
-# spaceBetweenRowsGrid1 = 47
-# spaceBetweenColsGrid1 = 45 
-# startXGrid1 = 310.2
-# startYGrid1 = 563.8
-# startZGrid1 = 210.96
-# alternateInBetweenGrid1 = false
-# 
-# rowsGrid2 = 4
-# colsGrid2 = 7
-# spaceBetweenRowsGrid2 = 140
-# spaceBetweenColsGrid2 = 200 
-# startXGrid2 = 
-# startYGrid2 = 
-# startZGrid2 = 
-# alternateInBetweenGrid2 = false
-
 rowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='rowsGrid1', value_type=int)
 colsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='colsGrid1', value_type=int)
 spaceBetweenRowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='spaceBetweenRowsGrid1', value_type=float)
@@ -120,7 +100,8 @@ for rowGrid1Index in range(rowsGrid1):
                 device.assemble_coordinate(0, 0, 0))
                 device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
             elif ((xPosGrid1 - 5)  <= currentPosition['x'] <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5)  <= currentPosition['y'] <= (yPosGrid1 + 5)) :
-                currentPositionGrid1Found
+                currentPositionGrid1Found = True
+                device.log(message='Set currentPositionGrid1Found to true', message_type='success')
 
             # Set the x and y positions on the second grid if alternateInBetween assume the first 
             # column is not an alternateInBetween then odd numbered colums are
@@ -144,7 +125,7 @@ for rowGrid1Index in range(rowsGrid1):
                 device.assemble_coordinate(0, 0, 0))
                 device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
             elif ((xPosGrid2 - 5)  <= currentPosition['x'] <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5)  <= currentPosition['y'] <= (yPosGrid2 + 5)) :
-                currentPositionGrid2Found
+                currentPositionGrid2Found = True
 
             # Increment y column position for grid 1
             yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
