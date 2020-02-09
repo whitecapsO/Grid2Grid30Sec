@@ -20,6 +20,8 @@ from farmware_tools import get_config_value
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
 
+device.log(message='diung params', message_type='success')
+
 rowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='rowsGrid1', value_type=int)
 colsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='colsGrid1', value_type=int)
 spaceBetweenRowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='spaceBetweenRowsGrid1', value_type=float)
@@ -38,6 +40,8 @@ startXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='star
 startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid2', value_type=float)
 startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
+
+device.log(message='Done params', message_type='success')
 
 device.move_absolute(
 device.assemble_coordinate(100, 100, 0),
