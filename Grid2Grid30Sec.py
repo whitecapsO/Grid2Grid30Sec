@@ -97,7 +97,7 @@ for rowGrid1Index in range(rowsGrid1):
             # If the second grid was found then move otherwise check if we've reached the current position
             device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPositionX), message_type='success')
             
-            if (int(xPosGrid1 - 5)  <= currentPositionX <= int(xPosGrid1 + 5)) :
+            if (int(xPosGrid1 - 5)  <= currentPositionX and currentPositionX <= int(xPosGrid1 + 5)) :
                 device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPositionX), message_type='success')
 
             if (int(yPosGrid1 - 5)  <= currentPositionY <= int(yPosGrid1 + 5)) :
