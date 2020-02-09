@@ -92,7 +92,11 @@ for rowGrid1Index in range(rowsGrid1):
             #device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
         else :
             # If the second grid was found then move otherwise check if we've reached the current position
-            device.log(message='xPosGrid1: ' + str(xPosGrid1) + 'currentPositionX: ' + str(currentPosition['x']), message_type='success')
+            if ((xPosGrid1 - 5)  <= currentPosition['x'] <= (xPosGrid1 + 5)) :
+                device.log(message='xPosGrid1: ' + str(xPosGrid1) + ' currentPositionX: ' + str(currentPosition['x']), message_type='success')
+
+            if ((yPosGrid1 - 5)  <= currentPosition['y'] <= (yPosGrid1 + 5)) :
+                device.log(message='yPosGrid1: ' + str(yPosGrid1) + ' currentPositionY: ' + str(currentPosition['y']), message_type='success')
 
             if currentPositionGrid2Found == True :
                 currentPositionGrid2Found = false
