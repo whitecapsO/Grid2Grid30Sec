@@ -3,6 +3,8 @@ from farmware_tools import device
 from farmware_tools import env
 from farmware_tools import get_config_value
 
+# TODO getting this error Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0	
+
 # Rewrite of Grid2Grid to run in 30 seconds due to limitations put on Farmware 
 # i.e. Farmware can only run for 30 seconds and there is a 2 second delay between device calls
 # the only way to loop is to use sequence recursion
