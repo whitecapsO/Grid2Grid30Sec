@@ -2,8 +2,10 @@ from farmware_tools import app
 from farmware_tools import device
 from farmware_tools import env
 from farmware_tools import get_config_value
+import math
 
-# TODO getting this error Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0	
+# TODO work out why it takes the Farmware librarys so long to load: 
+# https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
 
 # Rewrite of Grid2Grid to run in 30 seconds due to limitations put on Farmware 
 # i.e. Farmware can only run for 30 seconds and there is a 2 second delay between device calls
@@ -16,11 +18,17 @@ from farmware_tools import get_config_value
 # Decide if you pass a start flag for the first grid move on subsequent calls set this to false
 # May need to pass the current x, y, z co-ordinates rather than make the first call for the current co-ordinates
 
+# To work out Z axis height
+# 1. To work out the X axis angle use simple trig: angle = sin(angle) = opposite \ hypotenuse i.e. angle = sin-1 (opposite \ hypotenuse)
+# 2. To work out Z axis height i.e the opposite: hypotenuse = current X pos - beginining of X then opposite = sin(angle) * hypotenuse
+# 3. Then add that height (the opposite) to the startZGrid value
+
 # Remember if using alternate inbetween last row is missed so:
 # Normal grid: 3 rows x 2 columns = 6 cells
 # Alternate in between grid: 2 rows x 4 columns = 6 cells as last rows 2 of alternate inbetween columns missed
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
+
 try :
     rowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='rowsGrid1', value_type=int)
     colsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='colsGrid1', value_type=int)
@@ -29,6 +37,9 @@ try :
     startXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startXGrid1', value_type=float)
     startYGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid1', value_type=float)
     startZGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid1', value_type=float)
+    begininingOfXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid1', value_type=float)
+    lengthXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid1', value_type=float)
+    angleXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid1', value_type=float)
     alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid1', value_type=int)
     startLastRowOfGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startLastRowOfGrid1', value_type=int)
 
@@ -39,6 +50,9 @@ try :
     startXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startXGrid2', value_type=float)
     startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid2', value_type=float)
     startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
+    begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid2', value_type=float)
+    lengthXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid2', value_type=float)
+    angleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid2', value_type=float)
     alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
     # Initialise row (X) and column (Y) indexes for all grids
@@ -46,6 +60,8 @@ try :
     colGrid1Index = 0
     rowGrid2Index = 0
     colGrid2Index = 0
+    addToZHeightGrid1 = 0
+    addToZHeightGrid2 = 0
 
     # Initialise the current Position Found flags to not found
     currentPositionGrid1Found = False
@@ -61,6 +77,15 @@ try :
     currentPositionX = int(currentPositionXstr.split('.')[0])
     currentPositionYstr = str(currentPosition['y'])
     currentPositionY = int(currentPositionYstr.split('.')[0])
+
+    # Get the height additions for the Z axis if there is an x axis length and angle 
+    if (lengthXGrid1 != 0) and (angleXGrid1 != 0) :
+        hypotenuseGrid1 = currentPositionX - begininingOfXGrid1
+        addToZHeightGrid1 = math.sin(angleXGrid1) * hypotenuseGrid1
+
+    if (lengthXGrid2 != 0) and (angleXGrid2 != 0) :
+        hypotenuseGrid2  = currentPositionX - begininingOfXGrid2
+        addToZHeightGrid2 = math.sin(angleXGrid2) * hypotenuseGrid2
 
     # Start the first grid movement
     for rowGrid1Index in range(rowsGrid1):
@@ -102,7 +127,7 @@ try :
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': zPosGrid1}
+                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': zPosGrid1 + addToZHeightGrid1}
                         },
                         100,
                         {
@@ -133,7 +158,7 @@ try :
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': zPosGrid2}
+                            'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': zPosGrid2 + addToZHeightGrid2}
                         },
                         100,
                         {
@@ -161,4 +186,4 @@ try :
                 else :                                              # else
                     rowGrid2Index += 1                                  # Increment row index to move to the next row
 except :
-    pass
+    pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
