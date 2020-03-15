@@ -4,6 +4,7 @@ from farmware_tools import env
 from farmware_tools import get_config_value
 import math
 
+# Todo remove length arguement
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
 
@@ -129,12 +130,12 @@ try :
                     # Get the height additions for the Z axis if there is an x axis length and angle 
                     if (begininingOfXGrid1 != 0) and (angleXGrid1 != 0) :
                         hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
-                        addToZHeightGrid1 = math.sin(angleXGrid1) * hypotenuseGrid1
-                        device.log('angleXGrid1: ' + angleXGrid1 +' math.sin(angleXGrid1): ' + str(math.sin(angleXGrid1)) + ' begininingOfXGrid1: ' + str(begininingOfXGrid1) + ' xPosGrid1: '+ str(xPosGrid1) + ' hypotenuseGrid1: ' + str(hypotenuseGrid1) +' addToZHeightGrid1: ' + str(addToZHeightGrid1) + ' total z: ' + str(int(zPosGrid1 + addToZHeightGrid1)), 'success', ['toast'])
+                        addToZHeightGrid1 = (math.sin(angleXGrid1)) * hypotenuseGrid1
+                        device.log('angleXGrid1: ' + angleXGrid1 + ' math.sin(angleXGrid1): ' + str(math.sin(angleXGrid1)), 'success', ['toast'])
                     
                     # Move the Z axis
                     device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
-                    currentPositionGrid2Found = false
+                    currentPositionGrid2Found = False
                     #device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
                     currentPositionGrid1Found = True
@@ -171,7 +172,7 @@ try :
                         addToZHeightGrid2 = math.sin(angleXGrid2) * hypotenuseGrid2
 
                     device.move_relative(0, 0, int(zPosGrid2 + addToZHeightGrid2), 100)
-                    currentPositionGrid1Found = false
+                    currentPositionGrid1Found = False
                     #device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
                 elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
                     currentPositionGrid2Found = True
