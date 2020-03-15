@@ -130,7 +130,7 @@ try :
                     if (begininingOfXGrid1 != 0) and (angleXGrid1 != 0) :
                         hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
                         addToZHeightGrid1 = math.sin(angleXGrid1) * hypotenuseGrid1
-                        device.log('begininingOfXGrid1: ' + str(begininingOfXGrid1) + ' xPosGrid1: '+ str(xPosGrid1) + ' hypotenuseGrid1: ' + str(hypotenuseGrid1) +' addToZHeightGrid1: ' + str(addToZHeightGrid1) + ' total z: ' + str(int(zPosGrid1 + addToZHeightGrid1)), 'success', ['toast'])
+                        device.log('angleXGrid1: ' + angleXGrid1 +' math.sin(angleXGrid1): ' + str(math.sin(angleXGrid1)) + ' begininingOfXGrid1: ' + str(begininingOfXGrid1) + ' xPosGrid1: '+ str(xPosGrid1) + ' hypotenuseGrid1: ' + str(hypotenuseGrid1) +' addToZHeightGrid1: ' + str(addToZHeightGrid1) + ' total z: ' + str(int(zPosGrid1 + addToZHeightGrid1)), 'success', ['toast'])
                     
                     # Move the Z axis
                     device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
