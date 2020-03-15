@@ -127,7 +127,7 @@ try :
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': zPosGrid1 + addToZHeightGrid1}
+                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
                         },
                         100,
                         {
@@ -135,6 +135,7 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
+                    device.move_relative(0, 0, int(zPosGrid1), 75)
                     currentPositionGrid2Found = false
                     #device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
@@ -158,7 +159,7 @@ try :
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': zPosGrid2 + addToZHeightGrid2}
+                            'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
                         },
                         100,
                         {
@@ -166,6 +167,7 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
+                    device.move_relative(0, 0, int(zPosGrid2), 75)
                     currentPositionGrid1Found = false
                     #device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
                 elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
