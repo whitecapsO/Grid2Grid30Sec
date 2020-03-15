@@ -78,15 +78,6 @@ try :
     currentPositionYstr = str(currentPosition['y'])
     currentPositionY = int(currentPositionYstr.split('.')[0])
 
-    # Get the height additions for the Z axis if there is an x axis length and angle 
-    if (lengthXGrid1 != 0) and (angleXGrid1 != 0) :
-        hypotenuseGrid1 = currentPositionX - begininingOfXGrid1
-        addToZHeightGrid1 = math.sin(angleXGrid1) * hypotenuseGrid1
-
-    if (lengthXGrid2 != 0) and (angleXGrid2 != 0) :
-        hypotenuseGrid2  = currentPositionX - begininingOfXGrid2
-        addToZHeightGrid2 = math.sin(angleXGrid2) * hypotenuseGrid2
-
     # Start the first grid movement
     for rowGrid1Index in range(rowsGrid1):
         # Set first grids y position back to the first column
@@ -127,7 +118,7 @@ try :
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
+                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': 0}
                         },
                         100,
                         {
@@ -135,7 +126,12 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
-                    device.move_relative(0, 0, int(zPosGrid1), 75)
+                    # Get the height additions for the Z axis if there is an x axis length and angle 
+                    if (lengthXGrid1 != 0) and (angleXGrid1 != 0) :
+                        hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
+                        addToZHeightGrid1 = math.sin(angleXGrid1) * hypotenuseGrid1
+                    # Move the Z axis
+                    device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
                     currentPositionGrid2Found = false
                     #device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
@@ -167,7 +163,12 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
-                    device.move_relative(0, 0, int(zPosGrid2), 75)
+                    # Calculate and move the Z axis
+                    if (lengthXGrid2 != 0) and (angleXGrid2 != 0) :
+                        hypotenuseGrid2  = xPosGrid2 - begininingOfXGrid2
+                        addToZHeightGrid2 = math.sin(angleXGrid2) * hypotenuseGrid2
+
+                    device.move_relative(0, 0, int(zPosGrid2 + addToZHeightGrid2), 100)
                     currentPositionGrid1Found = false
                     #device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
                 elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
