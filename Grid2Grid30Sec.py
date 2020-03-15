@@ -38,6 +38,7 @@ try :
     startYGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid1', value_type=float)
     startZGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid1', value_type=float)
     begininingOfXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid1', value_type=float)
+    lengthXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid1', value_type=float)
     angleXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid1', value_type=float)
     alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid1', value_type=int)
     startLastRowOfGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startLastRowOfGrid1', value_type=int)
@@ -50,6 +51,7 @@ try :
     startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid2', value_type=float)
     startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
     begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid2', value_type=float)
+    lengthXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid2', value_type=float)
     angleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid2', value_type=float)
     alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
