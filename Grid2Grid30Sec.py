@@ -131,11 +131,12 @@ try :
                     if (begininingOfXGrid1 != 0) and (angleXGrid1 != 0) :
                         hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
                         addToZHeightGrid1 = angleXGrid1 * hypotenuseGrid1
-                        #addToZHeightGrid1 = (math.sin(angleXGrid1)) * hypotenuseGrid1
-                        #device.log('angleXGrid1: ' + str(angleXGrid1) + ' math.sin(angleXGrid1): ' + str(math.sin(angleXGrid1)), 'success', ['toast'])
-                    
-                    # Move the Z axis
-                    device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
+                        try :
+                            device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
+                        except :
+                            pass
+                            quit()
+                        
                     currentPositionGrid2Found = False
                     #device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 elif ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)) :
@@ -171,8 +172,12 @@ try :
                     if (begininingOfXGrid2 != 0) and (angleXGrid2 != 0) :
                         hypotenuseGrid2  = xPosGrid2 - begininingOfXGrid2
                         addToZHeightGrid2 = angleXGrid2 * hypotenuseGrid2
+                        try :
+                            device.move_relative(0, 0, int(zPosGrid2 + addToZHeightGrid2), 100)
+                        except :
+                            pass
+                            quit()
 
-                    device.move_relative(0, 0, int(zPosGrid2 + addToZHeightGrid2), 100)
                     currentPositionGrid1Found = False
                     #device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
                 elif ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
