@@ -93,6 +93,8 @@ try :
     currentPositionYstr = str(configContents[evName]).split(",",-1)[1]
     currentPositionY = int(currentPositionYstr.split('.')[0])
 
+    device.log(message="X pos is: " + str(currentPositionXstr) + " Y pos is: " + str(currentPositionYstr), message_type="success")
+
     # Start the first grid movement
     for rowGrid1Index in range(rowsGrid1):
         # Set first grids y position back to the first column
