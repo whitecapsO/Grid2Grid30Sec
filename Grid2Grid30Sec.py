@@ -2,9 +2,9 @@ from farmware_tools import app
 from farmware_tools import device
 from farmware_tools import env
 from farmware_tools import get_config_value
-import math
+import json
+import os
 
-# Todo remove length arguement and change name of angleXGrid1 to sineOfAngleXGrid1 and remove math lib
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
 
@@ -12,8 +12,8 @@ import math
 # i.e. Farmware can only run for 30 seconds and there is a 2 second delay between device calls
 # the only way to loop is to use sequence recursion
 # There will be three calls to the device to stay within the 30 second window
-# 1 - Get the current coordinates
-# 2 - Once the next co-ordinates are identified based on the current co-ordinates move there
+# 1 - Get the current coordinates from a config file the first move is done to prime the loop before Grid2Grid is called
+# 2 - Once the next co-ordinates are identified based on the current co-ordinates weite them to a config file and move there
 # 3 - Log the move
 
 # Decide if you pass a start flag for the first grid move on subsequent calls set this to false
@@ -39,8 +39,7 @@ try :
     startYGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid1', value_type=float)
     startZGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid1', value_type=float)
     begininingOfXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid1', value_type=float)
-    lengthXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid1', value_type=float)
-    angleXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid1', value_type=float)
+    sineOfAngleXGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='sineOfAngleXGrid1', value_type=float)
     alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid1', value_type=int)
     startLastRowOfGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startLastRowOfGrid1', value_type=int)
 
@@ -52,9 +51,13 @@ try :
     startYGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startYGrid2', value_type=float)
     startZGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='startZGrid2', value_type=float)
     begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='begininingOfXGrid2', value_type=float)
-    lengthXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='lengthXGrid2', value_type=float)
-    angleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='angleXGrid2', value_type=float)
+    sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='sineOfAngleXGrid2', value_type=float)
     alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
+
+    # Set config file and environment variable names
+    configFileName = 'config.json'
+    evName = 'xyCoordinates'
+    configContents = ""
 
     # Initialise row (X) and column (Y) indexes for all grids
     rowGrid1Index = 0
@@ -72,11 +75,22 @@ try :
     zPosGrid1 = startZGrid1
     zPosGrid2 = startZGrid2
 
-    # Get the current position for x and y
-    currentPosition = device.get_current_position()
-    currentPositionXstr = str(currentPosition['x'])
+    # Get the current position for x and y from the device
+    # currentPosition = device.get_current_position()
+    # currentPositionXstr = str(currentPosition['x'])
+    # currentPositionX = int(currentPositionXstr.split('.')[0])
+    # currentPositionYstr = str(currentPosition['y'])
+    # currentPositionY = int(currentPositionYstr.split('.')[0])
+
+    # Get the current position for x and y from the config
+    with open(configFileName, 'r') as f:
+        configContents = json.load(f)
+        f.close()
+
+    # Edit the data
+    currentPositionXstr = str(configContents[evName]).split(",",-1)[0]
     currentPositionX = int(currentPositionXstr.split('.')[0])
-    currentPositionYstr = str(currentPosition['y'])
+    currentPositionYstr = str(configContents[evName]).split(",",-1)[1]
     currentPositionY = int(currentPositionYstr.split('.')[0])
 
     # Start the first grid movement
@@ -116,10 +130,23 @@ try :
             else :
                 # If the second grid was found then move otherwise check if we've reached the current position
                 if currentPositionGrid2Found == True :
+                    # Delete and then rewrite the config file with the new co-ordinate
+                    os.remove(configFileName)
+                    configContents = {evName: str(xPosGrid1) + "," + str(yPosGrid1)}
+                    with open(configFileName, 'w') as f:
+                        json.dump(configContents, f)
+                        f.close()
+
+                    # Get the height additions for the Z axis if there is an x axis length and angle 
+                    if (begininingOfXGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
+                        hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
+                        addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
+                        
+                    # Do the move
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
-                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': 0}
+                            'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
                         },
                         100,
                         {
@@ -127,15 +154,6 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
-                    # Get the height additions for the Z axis if there is an x axis length and angle 
-                    if (begininingOfXGrid1 != 0) and (angleXGrid1 != 0) :
-                        hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
-                        addToZHeightGrid1 = angleXGrid1 * hypotenuseGrid1
-                        try :
-                            device.move_relative(0, 0, int(zPosGrid1 + addToZHeightGrid1), 100)
-                        except :
-                            pass
-                            quit()
                         
                     currentPositionGrid2Found = False
                     #device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
@@ -157,6 +175,19 @@ try :
 
                 # If the first grid was found then move otherwise check if we've reached the current position
                 if currentPositionGrid1Found == True :
+                    # Delete and then rewrite the config file with the new co-ordinate
+                    os.remove(configFileName)
+                    configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
+                    with open(configFileName, 'w') as f:
+                        json.dump(configContents, f)
+                        f.close()
+
+                    # Get the height additions for the Z axis if there is an x axis length and angle 
+                    if (begininingOfXGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
+                        hypotenuseGrid2 = xPosGrid2 - begininingOfXGrid2
+                        addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
+
+                    # Do the move
                     device.move_absolute(
                         {
                             'kind': 'coordinate',
@@ -168,15 +199,6 @@ try :
                             'args': {'x': 0, 'y': 0, 'z': 0}
                         }
                     )
-                    # Calculate and move the Z axis
-                    if (begininingOfXGrid2 != 0) and (angleXGrid2 != 0) :
-                        hypotenuseGrid2  = xPosGrid2 - begininingOfXGrid2
-                        addToZHeightGrid2 = angleXGrid2 * hypotenuseGrid2
-                        try :
-                            device.move_relative(0, 0, int(zPosGrid2 + addToZHeightGrid2), 100)
-                        except :
-                            pass
-                            quit()
 
                     currentPositionGrid1Found = False
                     #device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
