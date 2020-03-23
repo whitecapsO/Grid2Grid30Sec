@@ -29,7 +29,6 @@ import os
 # Alternate in between grid: 2 rows x 4 columns = 6 cells as last rows 2 of alternate inbetween columns missed
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
-device.log(message="1", message_type="success")
 
 #try :
 rowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='rowsGrid1', value_type=int)
@@ -55,14 +54,10 @@ begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_nam
 sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='sineOfAngleXGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
-device.log(message="2", message_type="success")
-
 # Set config file and environment variable names
 configFileName = '/tmp/farmware/config.json'
 evName = 'xyCoordinates'
 configContents = ''
-
-device.log(message="3", message_type="success")
 
 # Initialise row (X) and column (Y) indexes for all grids
 rowGrid1Index = 0
@@ -87,19 +82,10 @@ zPosGrid2 = startZGrid2
 # currentPositionYstr = str(currentPosition['y'])
 # currentPositionY = int(currentPositionYstr.split('.')[0])
 
-device.log(message="4", message_type="success")
-
-if os.path.isfile(configFileName) :
-    device.log(message="Found file", message_type="success")
-else :
-    device.log(message="Can't find file", message_type="success")
-
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
     configContents = json.load(f)
     f.close()
-
-device.log(message="config file contents: " + str(configContents), message_type="success")
 
 # Edit the data
 currentPositionXstr = str(configContents[evName]).split(",",-1)[0]
@@ -107,7 +93,7 @@ currentPositionX = int(currentPositionXstr.split('.')[0])
 currentPositionYstr = str(configContents[evName]).split(",",-1)[1]
 currentPositionY = int(currentPositionYstr.split('.')[0])
 
-#device.log(message="X pos is : " + str(currentPositionXstr) + " Y pos is: " + str(currentPositionYstr), message_type="success")
+device.log(message="X pos is : " + str(currentPositionXstr) + " Y pos is: " + str(currentPositionYstr), message_type="success")
 
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
