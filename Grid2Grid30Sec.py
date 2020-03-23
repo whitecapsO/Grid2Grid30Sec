@@ -58,7 +58,7 @@ alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', confi
 device.log(message="2", message_type="success")
 
 # Set config file and environment variable names
-configFileName = 'config.json'
+configFileName = '/tmp/farmware/config.json'
 evName = 'xyCoordinates'
 configContents = ''
 
