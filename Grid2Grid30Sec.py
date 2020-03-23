@@ -82,6 +82,11 @@ try :
     # currentPositionYstr = str(currentPosition['y'])
     # currentPositionY = int(currentPositionYstr.split('.')[0])
 
+    if os.path.exists(configFileName) :
+        device.log(message="Found file", message_type="success")
+    else :
+        device.log(message="Can't find file", message_type="success")
+
     # Get the current position for x and y from the config
     with open(configFileName, 'r') as f:
         configContents = json.load(f)
@@ -224,4 +229,4 @@ try :
                 else :                                              # else
                     rowGrid2Index += 1                                  # Increment row index to move to the next row
 except :
-    pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
+    #pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
