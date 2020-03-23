@@ -29,6 +29,7 @@ import os
 # Alternate in between grid: 2 rows x 4 columns = 6 cells as last rows 2 of alternate inbetween columns missed
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
+device.log(message="1", message_type="success")
 
 try :
     rowsGrid1 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='rowsGrid1', value_type=int)
@@ -54,10 +55,14 @@ try :
     sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='sineOfAngleXGrid2', value_type=float)
     alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid30Sec', config_name='alternateInBetweenGrid2', value_type=int)
 
+    device.log(message="2", message_type="success")
+
     # Set config file and environment variable names
     configFileName = 'config.json'
     evName = 'xyCoordinates'
-    configContents = ""
+    configContents = ''
+
+    device.log(message="3", message_type="success")
 
     # Initialise row (X) and column (Y) indexes for all grids
     rowGrid1Index = 0
@@ -81,6 +86,8 @@ try :
     # currentPositionX = int(currentPositionXstr.split('.')[0])
     # currentPositionYstr = str(currentPosition['y'])
     # currentPositionY = int(currentPositionYstr.split('.')[0])
+
+    device.log(message="4", message_type="success")
 
     if os.path.exists(configFileName) :
         device.log(message="Found file", message_type="success")
