@@ -89,7 +89,7 @@ zPosGrid2 = startZGrid2
 
 device.log(message="4", message_type="success")
 
-if os.path.exists(configFileName) :
+if os.path.isfile(configFileName) :
     device.log(message="Found file", message_type="success")
 else :
     device.log(message="Can't find file", message_type="success")
