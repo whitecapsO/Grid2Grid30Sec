@@ -87,13 +87,15 @@ try :
         configContents = json.load(f)
         f.close()
 
+    device.log(message="config file contents: " + str(configContents), message_type="success")
+
     # Edit the data
     currentPositionXstr = str(configContents[evName]).split(",",-1)[0]
     currentPositionX = int(currentPositionXstr.split('.')[0])
     currentPositionYstr = str(configContents[evName]).split(",",-1)[1]
     currentPositionY = int(currentPositionYstr.split('.')[0])
 
-    device.log(message="X pos is : " + str(currentPositionXstr) + " Y pos is: " + str(currentPositionYstr), message_type="success")
+    #device.log(message="X pos is : " + str(currentPositionXstr) + " Y pos is: " + str(currentPositionYstr), message_type="success")
 
     # Start the first grid movement
     for rowGrid1Index in range(rowsGrid1):
